@@ -7,7 +7,12 @@
 #include <math.h>
 #include <string.h>
 
-void testPrint(char *userInput){
-    printf("test output string: %s\n", userInput);
-}
+typedef struct CarPackage_struct {
+   char *cName = (char*)malloc(sizeof(char) * 20);
+   double dragCo;
+   double dragArea; 
+   double powerArr = (double*)malloc(sizeof(double) * 20);
+   int *speed[4] = {60, 70, 80};   
+} CAR;
+
 
