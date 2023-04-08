@@ -7,12 +7,12 @@
 #include <math.h>
 #include <string.h>
 
-typedef struct CarPackage_struct {
-   char *cName = (char*)malloc(sizeof(char) * 20);
+struct Car{
+   char cName[100];
    double dragCo;
    double dragArea; 
-   double powerArr = (double*)malloc(sizeof(double) * 20);
-   int *speed[4] = {60, 70, 80};   
-} CAR;
+   double powerArr[4];
+   int speed[4];   
+} block;
 
 
