@@ -28,7 +28,6 @@ if(strcmp(argv[1],argv[2])== 0){
    printf("please enter different output file name.");
 }
 
-
    FILE *inputFile = fopen(argv[1], "r");
    
    if(inputFile == NULL){
@@ -45,6 +44,16 @@ if(strcmp(argv[1],argv[2])== 0){
       fputs(Buffer, outputFile);
    }
    printf("finished writing output file\n");
+   
+//read input file
+//testPrint(inputFile);
+
+   FILE *outputFile = fopen(argv[2],"w");
+
+   //read inputfile and print the contents into output file
+   while(fgets(Buffer, SIZE, inputFile)){
+      fprintf(stdout, "%s", Buffer);
+   }
    
 //read input file
 //testPrint(inputFile);
