@@ -7,7 +7,6 @@
 #include <math.h>
 #include <string.h>
 
-void testPrint(char *userInput){
-    printf("test output string: %s\n", userInput);
-}
+
+
 

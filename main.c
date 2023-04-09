@@ -28,13 +28,25 @@ if(strcmp(argv[1],argv[2])== 0){
    printf("please enter different output file name.");
 }
 
-
    FILE *inputFile = fopen(argv[1], "r");
    
    if(inputFile == NULL){
    printf("error reading file");
    exit(1);
    }
+
+   FILE *outputFile = fopen(argv[2],"w");
+
+   //read inputfile and print the contents into output file
+   //currently it's reading the contents of input file and copying them into output file
+   printf("writing output file\n");
+   while(fgets(Buffer, SIZE, inputFile) != NULL){
+      fputs(Buffer, outputFile);
+   }
+   printf("finished writing output file\n");
+   
+//read input file
+//testPrint(inputFile);
 
    FILE *outputFile = fopen(argv[2],"w");
 
