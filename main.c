@@ -39,9 +39,12 @@ if(strcmp(argv[1],argv[2])== 0){
    FILE *outputFile = fopen(argv[2],"w");
 
    //read inputfile and print the contents into output file
-   while(fgets(Buffer, SIZE, inputFile)){
-      fprintf(stdout, "%s", Buffer);
+   //currently it's reading the contents of input file and copying them into output file
+   printf("writing output file\n");
+   while(fgets(Buffer, SIZE, inputFile) != NULL){
+      fputs(Buffer, outputFile);
    }
+   printf("finished writing output file\n");
    
 //read input file
 //testPrint(inputFile);
