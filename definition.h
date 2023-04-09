@@ -2,20 +2,16 @@
 */
 #ifndef DEFINITION_H
 #define DEFINITION_H
-//CONTENT
-
-void userInput(char *userInput);
-
 
 /*
 *this struct stores the data associated with the car
 */
-struct Car{
+typedef struct Car_struct{
    char cName[100];
    double dragCo;
    double dragArea; 
    double powerArr[4];
    int speed[4];   
-} block;
+} Car;
 
 #endif

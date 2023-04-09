@@ -17,6 +17,7 @@ int main (int argc, char **argv){
 int const SIZE = 200; //arbitrary size used to read the lines from input file
 int const SPEED[4] = {60, 70, 80}; 
 char *Buffer = (char*)malloc(sizeof(char) * SIZE); // temp array to hold the informatino read from input file
+Car *cBlockArr = (Car*)malloc(sizeof(Car)* SIZE);
 
 //checks for valid file names and input
 if(argc != 3){
@@ -43,6 +44,8 @@ if(strcmp(argv[1],argv[2])== 0){
    printf("writing output file\n");
    while(fgets(Buffer, SIZE, inputFile) != NULL){
       fputs(Buffer, outputFile);
+
+      //FIXME
    }
    printf("finished writing output file\n");
    
