@@ -48,6 +48,29 @@ void subdivideCarsFromInput(char const *inFILE, Car **carArray, int const SIZE_E
     fclose(inputFile);
     }
 
+    void sortArray (Car **carArray, int const SIZE_ARR, int const SIZE_ELE){
+       int count = 0;
+        for(int i = 0; i < SIZE_ARR; i++){
+            if(carArray[i]->dragArea == -1){
+            count++;
+            }
+        }
+
+        Car **sortedArray = (Car**)malloc(sizeof(Car*) * count);
+        for(int j = 0; j < count; j++){
+            sortedArray[j] = (Car*)malloc(sizeof(Car) * SIZE_ELE);
+        }
+       
+        fprintf(stdout, "*******CARS W/ POSITIVE DRAG AREA*******\n");
+        for(int k = 0; k < SIZE_ARR; k++){
+            if(carArray[k]->dragArea != -1){
+                sortedArray[k] = carArray[k];
+            } else {
+                continue;
+            }
+        fprintf(stdout, "%s\n", sortedArray[k] ->carName);
+        }
+    }
 
 
 void main (int argc, char **argv){
@@ -93,18 +116,20 @@ void main (int argc, char **argv){
 
 
     
-    //open output file
-  //FILE *outputFile = fopen(argv[2],"w");
+
     
     //process file
-    //read input file line by line
-    //and catagorize the information
+    //read input file line by line and store info in seperately
     subdivideCarsFromInput(inFILE, carArray, SIZE_ELE, SIZE_ARR, BUFFER);
+    sortArray(carArray, SIZE_ARR, SIZE_ELE);
 
-
+    //open output file
+    //FILE *outputFile = fopen(argv[2],"w");
+    /*
     for(int k = 0; k < SIZE_ARR; k++){
     fprintf(stdout,"row[%d]: %s %.2lf %.2lf\n", k, carArray[k]->carName,carArray[k]->dragCo,carArray[k]->dragArea);
     }
+    */
         
 
 
