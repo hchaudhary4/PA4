@@ -47,30 +47,33 @@ void subdivideCarsFromInput(char const *inFILE, Car **carArray, int const SIZE_E
 
     fclose(inputFile);
     }
-
-    void sortArray (Car **carArray, int const SIZE_ARR, int const SIZE_ELE){
-       int count = 0;
-        for(int i = 0; i < SIZE_ARR; i++){
-            if(carArray[i]->dragArea == -1){
-            count++;
-            }
-        }
-
-        Car **sortedArray = (Car**)malloc(sizeof(Car*) * count);
-        for(int j = 0; j < count; j++){
-            sortedArray[j] = (Car*)malloc(sizeof(Car) * SIZE_ELE);
-        }
+void sortArray (Car **carArray, int const SIZE_ARR, int const SIZE_ELE){
+ //counts the amount of time dragarea != -1 ==> tell what size new array needs to be
+ int count = 0;
+ for(int i = 0; i < SIZE_ARR; i++){
+     if(carArray[i]->dragArea != -1){
+     count++
+     }
+  }
+  
+  //generate new reduced array
+  Car **sortedArray = (Car**)malloc(sizeof(Car*) * count);
+  for(int j = 0; j < count; j++){
+    sortedArray[j] = (Car*)malloc(sizeof(Car) * SIZE_ELE);
+  }
        
-        fprintf(stdout, "*******CARS W/ POSITIVE DRAG AREA*******\n");
-        for(int k = 0; k < SIZE_ARR; k++){
-            if(carArray[k]->dragArea != -1){
-                sortedArray[k] = carArray[k];
-            } else {
-                continue;
-            }
-        fprintf(stdout, "%s\n", sortedArray[k] ->carName);
-        }
+   //print states are optional --> remove in final stages
+   // places cars with positive drag area in a new array
+  fprintf(stdout, "*******CARS W/ POSITIVE DRAG AREA*******\n");
+   for(int k = 0; k < SIZE_ARR; k++){
+        if(carArray[k]->dragArea != -1){
+           sortedArray[k] = carArray[k];
+         } else {
+            continue;
+         }
+     fprintf(stdout, "%s\n", sortedArray[k] ->carName);
     }
+}
 
 
 void main (int argc, char **argv){
