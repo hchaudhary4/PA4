@@ -6,12 +6,14 @@
 /*
 *this struct stores the data associated with the car
 */
+/*
 typedef struct Car_struct{
    char cName[100];
    double dragCo;
    double dragArea; 
-   double powerArr[4];
-   int speed[4];   
+   double powerArr[4]; 
 } Car;
+
+*/
 
 #endif
