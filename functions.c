@@ -7,12 +7,17 @@
 #include <math.h>
 #include <string.h>
 
-typedef struct Car_stru {
+typedef struct Car_struct{
     char carName[100];
     char dragCo[20];
     char dragArea[20];
-    char powerArr[20];
-} Car;
+}Car;
+
+typedef struct Power_struct{
+    char sixty[20];
+    char seventy[20];
+    char eighty[20];
+}Power;
 
 //pre-reads the input file to figure out how many rows it has ==> how big general array needs to be
 int getFileRows(char *BUFFER, FILE *inputFile){
@@ -68,6 +73,18 @@ void eliminateCars(int count, int const SIZE_ELE, int const SIZE_ARR, Car **carA
     printf("integer value for sortedArr: %d\n", i);
 }
 
+double calculatePower(int const count, Car **sortedArray, Power **powerArray, double *VEL){
+    double halfP = 0.5 * 1.18;
+    for(int i = 0; i < count; i++){
+            double temp = atof(sortedArray[i]->dragCo) * halfP * pow(VEL[0], 2) * atof(sortedArray[i]->dragArea);
+            powerArray[i]->sixty = temp * VEL[0];
+            double temp = atof(sortedArray[i]->dragCo) * halfP * pow(VEL[1], 2) * atof(sortedArray[i]->dragArea);
+            powerArray[i]->seventy = temp * VEL[1];
+            double temp = atof(sortedArray[i]->dragCo) * halfP * pow(VEL[2], 2) * atof(sortedArray[i]->dragArea);
+            powerArray[i]->eighty = temp * VEL[2];
+    }
+}
+
 void printToOutputFile(Car **sortedArray, int count, FILE *outputFile){
    fputs("Car Name;   Drag Coefficient;    Drag Area;\n", outputFile);
     for(int i = 0; i < count; i++){
@@ -81,6 +98,5 @@ void printToOutputFile(Car **sortedArray, int count, FILE *outputFile){
         fputs("\n", outputFile);
     }
 }
-
 
 
