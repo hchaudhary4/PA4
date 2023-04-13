@@ -6,20 +6,14 @@
 #include <string.h>
 
 /**
- * Authors: Daleela Letyaeva
+ * Authors: Daleela Letyaeva, Hamza Saeed , Antonio Jimenez
 */
 
+
 void main (int argc, char **argv){
-    double *VEL = (double*)malloc(sizeof(double) * 4); //also the velocity in the equation
-    for (int i = 0; i < 4; i++){
-        VEL[i] = 60 + (10 * i);
-    }
 
-    //converts MPH to meters per second
-    for (int i = 0; i < 3; i++){
-        VEL[i] = VEL[i] * 0.44704;
-    }
-
+    printf("WELCOME TO GROUP 15's AUTO POWER CALCULATOR!!!  !\n");
+    printf("reading the input file %s\n", argv[1]);
     //check that user enters in/out file name
     if(argc != 3){ //FIXME LATER
     printf("Usage: enter input file name and output filename after %s\n", argv[0]);
@@ -28,7 +22,7 @@ void main (int argc, char **argv){
 
     //try to avoid user from confusing the 2 files
     if(strcmp(argv[1],argv[2])== 0){
-    printf("please enter different output file name.");
+    printf("please enter different output file name.\n");
     }
 
     //read input file
@@ -38,7 +32,7 @@ void main (int argc, char **argv){
 
    //check for file not to be empty
     if(inputFile == NULL){
-     printf("error reading file");
+     printf("error reading file\n");
      exit(1);
     }
 
@@ -47,48 +41,72 @@ void main (int argc, char **argv){
     char *BUFFER= (char*)malloc(sizeof(char) * SIZE_ELE);
 
     int const SIZE_ARR = getFileRows(BUFFER, inputFile);
-    printf("# of file rows = %d\n", SIZE_ARR);
+    printf("---- completed reading %d lines of data\n", SIZE_ARR);
 
     Car **carArray = (Car**) malloc (sizeof(Car*) * SIZE_ARR); // allocated memory for the general array
         for(int i =0; i < SIZE_ARR; i++){
             carArray[i] = (Car*) malloc (sizeof(Car) * SIZE_ELE); // allocated memory for each element in the general array
         }
+    
+    //velocity
+    double *VEL = (double*)malloc(sizeof(double) * 4); 
+    for (int i = 0; i < 4; i++){
+        //init the array with MPH values
+        VEL[i] = 60 + (10 * i);
 
-    //opens file in funciton
-    //process file by read input file line by line and store info in seperately
-    //closes file once done reading
+        //converts MPH to meters per second
+        VEL[i] = VEL[i] * 0.44704;
+    }
+
+    /*opens file in funciton
+    * process file by read input file line by line and store info in seperately
+    * closes file once done reading
+    */
     subdivideCarsFromInput(inFILE, carArray, SIZE_ELE, SIZE_ARR, BUFFER);
 
     //this variable is the value size for new array
+    printf("---- Sorting out all cars that have positive drag area\n");
     int count = countPositive(carArray, SIZE_ARR, SIZE_ELE);
+    
+    if(count == 0){
+        printf("sorry, no cars were found with positive drag area - please input a different file");
+        exit(1);
+    } else {
+        printf("---- found %d cars with positive drag area - distributing data to %s\n", count, argv[2]);
+    }
 
     Car **sortedArray = (Car**)malloc(sizeof(Car*) * count);
         for(int j = 0; j < count; j++){
             sortedArray[j] = (Car*)malloc(sizeof(Car) * SIZE_ELE);
         }
-
+   
     //sort the old array into new one
     //put into a function later
     eliminateCars(count, SIZE_ELE, SIZE_ARR, carArray, sortedArray);
-
-    Power **powerArray = (Power**)malloc(sizeof(Power*) * 4);
-        for(int i = 0; i < 4; i++){
-            powerArray[i] = (Power*)malloc(sizeof(Power) * 10);
-        }
-
-    calculatePower(count, sortedArray, powerArray, VEL);
-
+    
+    //computes the power for each car using the array VEL that has the values for
+    //60, 70 and 80 and copies the information to sortedArray using magic of type conversions 
+    //note this function does not take individual values for MPH instead they are provided in VEL 
+    // in which they are then immediately converted to M/S
+    computePower(sortedArray, count, VEL);
+ 
     //open output file
     FILE *outputFile = fopen(argv[2],"w");
 
     //writes the data from Array to txt file
     printToOutputFile(sortedArray, count, outputFile);
-
-    //function that computes power
-    //computePower();
-
-    //function that compares the data of two cars
-    //carCmp();
+    //printtoTerminal(sortedArray, count);
+    //printComparisons(sortedArray, count);
+    printf("Writing comparisons of drag area to power at 60 MPH\n");
+        for(int j = 0; j < count; j++){ //corresponds to the columns
+            for(int k=0; k < count; k++){
+                if((sortedArray[j]->dragArea > sortedArray[k]->dragArea) && (atof(sortedArray[j]->power[0]) < atof(sortedArray[k]->power[0]))){
+                printf("---- The drag area of %.6s  >  %.6s, but has lower power comsupation at 60 mph\n", sortedArray[k]->carName, sortedArray[j]->carName);
+                }else{
+                    continue;
+                }
+            }
+        }
 
 
 fclose(outputFile);
@@ -98,3 +116,5 @@ free(sortedArray);
 
 return;
 }
+
+
