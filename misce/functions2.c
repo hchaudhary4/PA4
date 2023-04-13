@@ -7,13 +7,21 @@
 #include <math.h>
 #include <string.h>
 
-
 typedef struct Car_struct{
     char carName[100];
     char dragCo[20];
     char dragArea[20];
-    char power[20][10]; //first one row, second one column
+    char sixty[20];
+    char seventy[20];
+    char eighty[20];
 }Car;
+
+
+typedef struct Power_struct{
+    char sixty[20];
+    char seventy[20];
+    char eighty[20];
+}Power;
 
 
 //pre-reads the input file to figure out how many rows it has ==> how big general array needs to be
@@ -67,53 +75,53 @@ void eliminateCars(int count, int const SIZE_ELE, int const SIZE_ARR, Car **carA
                 i++;
             }
         }
+    printf("integer value for sortedArr: %d\n", i);
 }
 
-void computePower(Car **sortedArray, int count,double *VEL){
-    double pwrtemp;
-    char buf[10];
+
+void calculatePower(int count, Car **sortedArray, Car **powerArray, double *VEL){
     double halfP = 0.5 * 1.18;
-    for(int i = 0; i < count; i++){
-        for(int j = 0; j < 3; j++){
-        pwrtemp = atof(sortedArray[i]->dragCo) * halfP * pow(VEL[j], 3) * atof(sortedArray[i]->dragArea);
-        //converts the double to a string so it can be stored in sortedArray
-        gcvt(pwrtemp, 6, buf);
-        strcpy(sortedArray[i]->power[j], buf);
-        }
+    for(int i = 0; i < 18; i++){
+            double temp = atof(sortedArray[i]->dragCo) * halfP * pow(VEL[0], 2) * atof(sortedArray[i]->dragArea) * VEL[0];
+            powerArray[i]->sixty = temp;
+           // temp = atof(sortedArray[i]->dragCo) * halfP * pow(VEL[1], 2) * atof(sortedArray[i]->dragArea) * VEL[1];
+           // powerArray[i]->seventy = temp;
+           // temp = atof(sortedArray[i]->dragCo) * halfP * pow(VEL[2], 2) * atof(sortedArray[i]->dragArea) * VEL[2];
+           // powerArray[i]->eighty = temp;
     }
 }
+
+
+/*
+void calculatePower(int count, Car **sortedArray, Car **powerArray, double *VEL){
+    double halfP = 0.5 * 1.18;
+    for(int i = 0; i < 18; i++){
+            double temp = atof(sortedArray[i]->dragCo) * halfP * pow(VEL[0], 2) * atof(sortedArray[i]->dragArea) * VEL[0];
+            strcpy(powerArray[i]->sixty, temp);
+            temp = atof(sortedArray[i]->dragCo) * halfP * pow(VEL[1], 2) * atof(sortedArray[i]->dragArea) * VEL[1];
+            strcpy(powerArray[i]->seventy, temp);
+            temp = atof(sortedArray[i]->dragCo) * halfP * pow(VEL[2], 2) * atof(sortedArray[i]->dragArea) * VEL[2];
+            strcpy(powerArray[i]->eighty, temp);
+    }
+}
+*/
+
+
+
 
 
 void printToOutputFile(Car **sortedArray, int count, FILE *outputFile){
-   fputs("Car Name;   Drag Coefficient;    Drag Area;   Power@60;   Power@70;   Power@80;\n", outputFile);
+   fputs("Car Name;   Drag Coefficient;    Drag Area;\n", outputFile);
     for(int i = 0; i < count; i++){
+        fprintf(stdout, "%s", sortedArray[i]->carName);
+        fprintf(stdout, ", %s\n", sortedArray[i]->dragArea);
         fputs(sortedArray[i]->carName, outputFile);
-        fputs(" , ", outputFile);
+        fputs(" ,", outputFile);
         fputs(sortedArray[i]->dragCo, outputFile);
-        fputs(" , ", outputFile);
+        fputs(" ,", outputFile);
         fputs(sortedArray[i]->dragArea, outputFile);
-        fputs(" ,--------------------------------------------------------------", outputFile);
-        for(int j =0; j < 2; j++){
-            fputs(sortedArray[i]->power[j], outputFile);
-            fputs(" , ", outputFile);
-        }
-        fputs(sortedArray[i]->power[2], outputFile);
         fputs("\n", outputFile);
     }
 }
-
-void printtoTerminal(Car **sortedArray, int count){
-    for(int i = 0; i < count; i++){
-    printf("what it is v2.0: ");
-        for(int j = 0; j < 3; j++){
-        printf("%s ", sortedArray[i]->power[j]);
-        }
-    printf("\n");
-    }
-}
-
-void printComparisons(Car **sortedArray, int count){}
-
-
 
 
